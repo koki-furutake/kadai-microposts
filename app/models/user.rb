@@ -10,8 +10,9 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :follow
   has_many :reverses_of_relationship, class_name: 'Relationship', foreign_key: 'follow_id'
   has_many :followers, through: :reverses_of_relationship, source: :user
-  has_many :favorite,through: favoritetables, source: :microposts
-  
+  has_many :favoritetables
+  has_many :favorite_microposts, through: :favoritetables, source: :micropost
+
   #フォローメソッド
   def follow(other_user)
     unless self == other_user  #フォローしている人が自分自身でないかの検証
@@ -35,18 +36,15 @@ class User < ApplicationRecord
   end
   
   def favorite(other_micropost)
-    unless self == other_micropost
-      self.favoritetables.find_or_create_by(follow_id: other_micropost.id)
-    end
+    self.favoritetables.find_or_create_by(micropost_id: other_micropost.id)
   end
   
   def unfavorite(other_micropost)
-    favoritetables = self.favoritetables.find_by(follow_id: other_micropost.id)
-    favoritetables.destroy if favoritetables
+    micropost = self.favoritetables.find_by(micropost_id: other_micropost.id)
+    micropost.destroy if micropost
   end
   
   def favorite?(other_micropost)
-    self.favoritetables.include?(other_micropost)
+    self.favorite_microposts.include?(other_micropost)
   end
-
 end

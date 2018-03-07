@@ -12,6 +12,7 @@
           <p><%= micropost.content %></p>
         </div>
         <div>
+          <%= render 'favoritetables/favorite_button', micropost: micropost %>
           <% if current_user == micropost.user %>
             <%= link_to "Delete", micropost, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-xs' %>
           <% end %>
@@ -21,4 +22,3 @@
   <% end %>
   <%= paginate microposts %>
 </ul>
-9.6 users#sh

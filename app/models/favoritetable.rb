@@ -1,7 +1,7 @@
 class Favoritetable < ApplicationRecord
   belongs_to :user
-  belongs_to :favorite, class_name: 'Microposts'
+  belongs_to :micropost
   
   validates :user_id, presence: true
-  validates :favorite_id, presence: true
+  validates :micropost_id, presence: true
 end
